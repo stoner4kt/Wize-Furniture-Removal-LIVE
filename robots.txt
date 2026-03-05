@@ -1,0 +1,21 @@
+# robots.txt — Wize Furniture Removal
+# https://wizeremoval.co.za/
+
+User-agent: *
+Allow: /
+Disallow: /thank-you.html
+Disallow: /send-mail.php
+Disallow: /404.html
+
+# Block common bad bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://wizeremoval.co.za/sitemap.xml

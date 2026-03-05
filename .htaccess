@@ -1,0 +1,162 @@
+# ============================================================
+# .htaccess — Wize Furniture Removal | wizeremoval.co.za
+# cPanel / Apache production configuration
+# ============================================================
+
+Options -Indexes
+
+# ============================================================
+# Force HTTPS
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Redirect HTTP to HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Redirect www to non-www (canonical domain)
+  RewriteCond %{HTTP_HOST} ^www\.wizeremoval\.co\.za [NC]
+  RewriteRule ^(.*)$ https://wizeremoval.co.za/$1 [R=301,L]
+</IfModule>
+
+# ============================================================
+# Custom Error Pages
+# ============================================================
+ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+ErrorDocument 500 /404.html
+
+# ============================================================
+# Block direct access to sensitive files
+# ============================================================
+<FilesMatch "\.(env|log|sql|bak|config|htpasswd|git)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Block direct PHP mailer access (only allow via form)
+<Files "send-mail.php">
+  Order allow,deny
+  Allow from all
+</Files>
+
+# ============================================================
+# Gzip Compression
+# ============================================================
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE font/otf
+  AddOutputFilterByType DEFLATE font/woff
+  AddOutputFilterByType DEFLATE font/woff2
+  AddOutputFilterByType DEFLATE application/font-woff
+  AddOutputFilterByType DEFLATE application/font-woff2
+</IfModule>
+
+# ============================================================
+# Browser Caching (Leverage Cache-Control)
+# ============================================================
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                            "access plus 1 month"
+
+  # HTML — short cache, content changes
+  ExpiresByType text/html                   "access plus 1 hour"
+
+  # CSS and JavaScript
+  ExpiresByType text/css                    "access plus 1 year"
+  ExpiresByType application/javascript      "access plus 1 year"
+  ExpiresByType text/javascript             "access plus 1 year"
+
+  # Images
+  ExpiresByType image/jpeg                  "access plus 1 year"
+  ExpiresByType image/jpg                   "access plus 1 year"
+  ExpiresByType image/png                   "access plus 1 year"
+  ExpiresByType image/gif                   "access plus 1 year"
+  ExpiresByType image/webp                  "access plus 1 year"
+  ExpiresByType image/svg+xml               "access plus 1 year"
+  ExpiresByType image/x-icon               "access plus 1 year"
+  ExpiresByType image/vnd.microsoft.icon   "access plus 1 year"
+
+  # Fonts
+  ExpiresByType font/ttf                    "access plus 1 year"
+  ExpiresByType font/otf                    "access plus 1 year"
+  ExpiresByType font/woff                   "access plus 1 year"
+  ExpiresByType font/woff2                  "access plus 1 year"
+  ExpiresByType application/font-woff       "access plus 1 year"
+  ExpiresByType application/font-woff2      "access plus 1 year"
+
+  # XML and JSON
+  ExpiresByType application/xml             "access plus 0 seconds"
+  ExpiresByType text/xml                    "access plus 0 seconds"
+  ExpiresByType application/json           "access plus 0 seconds"
+</IfModule>
+
+# Cache-Control headers
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|ttf|otf)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|htm|php)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ============================================================
+# Security Headers
+# ============================================================
+<IfModule mod_headers.c>
+  # Prevent clickjacking
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Prevent MIME sniffing
+  Header always set X-Content-Type-Options "nosniff"
+
+  # XSS Protection (legacy browsers)
+  Header always set X-XSS-Protection "1; mode=block"
+
+  # Referrer Policy
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Permissions Policy
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  # HSTS — enable after confirming HTTPS works (uncomment after testing)
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# ============================================================
+# MIME Types
+# ============================================================
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType font/woff .woff
+  AddType image/webp .webp
+  AddType text/javascript .js
+  AddType application/json .json
+</IfModule>
+
+# ============================================================
+# Remove ETags (reduces overhead with Cache-Control)
+# ============================================================
+<IfModule mod_headers.c>
+  Header unset ETag
+</IfModule>
+FileETag None
+
+# ============================================================
+# Keep-Alive
+# ============================================================
+<IfModule mod_headers.c>
+  Header set Connection keep-alive
+</IfModule>
