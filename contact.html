@@ -181,17 +181,17 @@
             <h2>Request a Free Quote</h2>
             <p class="form-helper">Fill in your details and we will call or email you back as soon as possible.</p>
 
-           <form id="contactForm"
-      class="contact-form"
-      name="contact"
-      method="POST"
-      action="/thank-you.html"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      novalidate>
+            <form id="contactForm"
+              class="contact-form"
+              name="contact"
+              method="POST"
+              action="thank-you.html"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field">
 
   <!-- Netlify form identifier -->
   <input type="hidden" name="form-name" value="contact">
+  <input type="hidden" name="subject" value="Website contact form submission">
 
   <!-- Honeypot spam protection -->
   <p style="display:none;">
