@@ -181,43 +181,58 @@
             <h2>Request a Free Quote</h2>
             <p class="form-helper">Fill in your details and we will call or email you back as soon as possible.</p>
 
-            <form id="contactForm" class="contact-form" action="send-mail.php" method="post" novalidate>
-              <input type="hidden" name="_redirect" value="thank-you.html">
-              <!-- Honeypot spam trap -->
-              <input type="text" name="company" class="hidden-field" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none;">
+           <form id="contactForm"
+      class="contact-form"
+      name="contact"
+      method="POST"
+      action="/thank-you.html"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      novalidate>
 
-              <div class="form-group">
-                <label for="name">Full Name <span aria-hidden="true">*</span></label>
-                <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your full name">
-              </div>
+  <!-- Netlify form identifier -->
+  <input type="hidden" name="form-name" value="contact">
 
-              <div class="form-group">
-                <label for="email">Email Address <span aria-hidden="true">*</span></label>
-                <input type="email" id="email" name="email" required autocomplete="email" placeholder="your@email.com">
-              </div>
+  <!-- Honeypot spam protection -->
+  <p style="display:none;">
+    <label>Don’t fill this out if you're human:
+      <input name="bot-field">
+    </label>
+  </p>
 
-              <div class="form-group">
-                <label for="phone">Phone Number <span aria-hidden="true">*</span></label>
-                <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="e.g. 066 312 8522">
-              </div>
+  <div class="form-group">
+    <label for="name">Full Name <span aria-hidden="true">*</span></label>
+    <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your full name">
+  </div>
 
-              <div class="form-group">
-                <label for="service">Service Required <span aria-hidden="true">*</span></label>
-                <select id="service" name="service" required>
-                  <option value="">Select a service</option>
-                  <option value="Furniture &amp; House Removals">Furniture &amp; House Removals</option>
-                  <option value="Rubble &amp; Garden Removal">Rubble &amp; Garden Removal</option>
-                  <option value="Other">Other — please describe below</option>
-                </select>
-              </div>
+  <div class="form-group">
+    <label for="email">Email Address <span aria-hidden="true">*</span></label>
+    <input type="email" id="email" name="email" required autocomplete="email" placeholder="your@email.com">
+  </div>
 
-              <div class="form-group">
-                <label for="message">Message / Details <span aria-hidden="true">*</span></label>
-                <textarea id="message" name="message" rows="5" required placeholder="Tell us what you need moved or removed. Include your location and preferred date if possible."></textarea>
-              </div>
+  <div class="form-group">
+    <label for="phone">Phone Number <span aria-hidden="true">*</span></label>
+    <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="e.g. 066 312 8522">
+  </div>
 
-              <button type="submit" class="btn btn-primary">Send Request</button>
-            </form>
+  <div class="form-group">
+    <label for="service">Service Required <span aria-hidden="true">*</span></label>
+    <select id="service" name="service" required>
+      <option value="">Select a service</option>
+      <option value="Furniture & House Removals">Furniture & House Removals</option>
+      <option value="Rubble & Garden Removal">Rubble & Garden Removal</option>
+      <option value="Other">Other — please describe below</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="message">Message / Details <span aria-hidden="true">*</span></label>
+    <textarea id="message" name="message" rows="5" required placeholder="Tell us what you need moved or removed. Include your location and preferred date if possible."></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Send Request</button>
+
+</form>
           </div>
 
         </div>
